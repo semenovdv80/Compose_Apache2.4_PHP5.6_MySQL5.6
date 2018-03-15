@@ -1,0 +1,25 @@
+version: '3'
+services:
+  web:
+    image: php:5.6-apache
+    hostname: virtualhost
+    domainname: virtualhost.com
+    ports:
+          - 8000:80
+          #виртуальному юзеру www-data присваиваем UID владельца папки /var/www
+          #виртуальной группе www-data присваиваем UID группы папки/var/www
+    command: |
+        bash -c 'apt-get update \
+        && apt-get install -y libc-client-dev libkrb5-dev \
+        && rm -r /var/lib/apt/lists/* \
+        && docker-php-ext-configure imap --with-kerberos --with-imap-ssl \
+        && docker-php-ext-install imap \
+        &&a2enmod rewrite \
+        && usermod -u `stat -c %u /var/www` www-data \
+        && groupmod -g `stat -c %g /var/www` www-data \
+        && apache2-foreground'
+    volumes:
+          - /etc/apache2/sites-enabled:/etc/apache2/sites-enabled
+          - /etc/apache2/sites-available:/etc/apache2/sites-available
+          - /var/www:/var/www
+    restart: always
