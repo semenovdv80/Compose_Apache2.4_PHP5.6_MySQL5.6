@@ -8,6 +8,8 @@ RUN a2enmod rewrite
 RUN apt-get update
 RUN apt-get install -y libpng-dev libc-client-dev libkrb5-dev
 RUN apt-get install -y libmcrypt-dev
+RUN apt-get install nano
 RUN docker-php-ext-configure imap --with-kerberos --with-imap-ssl
 RUN docker-php-ext-install imap
 RUN docker-php-ext-install pdo_mysql mysqli gd
+RUN docker-php-ext-install mysql
