@@ -13,10 +13,11 @@ services:
     hostname: virtualhost
     domainname: virtualhost.com
     ports:
-          - 8000:80
+          - 80:80 #local/virtual
     volumes:
-      - /etc/apache2/sites-enabled:/etc/apache2/sites-enabled
-      - /etc/apache2/sites-available:/etc/apache2/sites-available
+      - ./apache2/sites-enabled:/etc/apache2/sites-enabled
+      - ./apache2/sites-available:/etc/apache2/sites-available
+      - ./apache2/log:/var/log/apache2
       - /var/www:/var/www
     restart: always
     environment:
